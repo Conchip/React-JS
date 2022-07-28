@@ -5,39 +5,41 @@
 <body>
     <div id="root"></div>
 </body>
-<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script type="text/babel">
     const root = document.getElementById("root");
     // 함수로 인자를 받아 그와 상황에 맞게 버튼 스타일 변경가능
-    function Btn({ text, onClick }){
+    function Btn({ text, fontSize = 14 }){
         return (
             <button 
-                onClick={onClick}
                 style={{
                     backgroundColor:"tomato",
                     color:"white",
                     padding:"10px 20px",
                     border:0,
                     borderRadius:10,
+                    fontSize,
                 }}
             >
-            {text}</button>  
-        )
+            {text}
+            </button>  
+        );
     }
-    // 만약 props가 변경되지 않는다면 리렌더링을 하지마라고 언급
-    const MemorisedBtn = React.memo(Btn)
+    Btn.propTypes = {
+        text: PropTypes.string.isRequired,
+        fontSize : PropTypes.number,
+    };
     function App() {
-        const [value, setValue] = React.useState("Save Changes");
-        const changeValue = () => setValue("Revert Changes");
         return (
             <div>
-                <MemorisedBtn text={value} onClick={changeValue}/>
-                <MemorisedBtn text="Continue"/>       
+                <Btn text="Save Changes" fontSize={18} />
+                <Btn text={"Continue"} />  
             </div>
         );
-    };
+    }
 
     ReactDOM.render(<App />, root);
 
